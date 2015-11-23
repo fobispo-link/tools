@@ -1,0 +1,24 @@
+#!/usr/bin/env perl
+use common::sense;
+use Regexp::Grammars;
+use Data::Dumper;
+use File::Slurp;
+
+my $text = $ARGV[0];
+
+my %dict = (
+  map { $_ => 1 }
+  grep { length( $_ ) > 1 }
+  map { chomp( $_ ); $_ } read_file( '/usr/share/dict/words' )
+);
+
+my $wordre = qr{
+  <[word]>+
+  <rule: word>
+    <%dict>
+}sxm;
+
+
+if ( $text =~ $wordre ) {
+  say Dumper( \%/ );
+}
